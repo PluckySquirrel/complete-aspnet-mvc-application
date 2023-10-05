@@ -71,7 +71,7 @@ namespace eTickets.Controllers
 
 		//Get: Cinemas/Edit/1
 
-		[HttpPost, ActionName=("Delete")]
+		[HttpPost, ActionName("Delete")]
 		public async Task<IActionResult> DeleteConfirm(int id)
 		{
 			var cinemaDetails = await _service.GetByIdAsync(id);
