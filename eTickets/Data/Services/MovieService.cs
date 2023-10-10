@@ -1,4 +1,5 @@
 ﻿using eTickets.Data.Base;
+using eTickets.Data.ViewModels;
 using eTickets.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,6 +24,18 @@ namespace eTickets.Data.Services
 
 			return movieDetails;
 
+		}
+
+		public async Task<NewMovieDropdownVM> GetNewMovieDropdownsValues()
+		{
+			var response = new NewMovieDropdownVM()
+			{
+				Actors = await _context.Actors.OrderBy(n => n.FullName).ToListAsync(),
+				Cinemas = await _context.Cinemas.OrderBy(n => n.Name).ToListAsync(),
+				Producers = await _context.Producers.OrderBy(n => n.FullName).ToListAsync()
+			};
+
+			return response;
 		}
 	}
 }
