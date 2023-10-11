@@ -27,7 +27,7 @@ namespace eTickets.Data.Cart
 		{
 			var shoppingCartItem = _context.ShoppingCartItems.FirstOrDefault(n => n.Id == movie.Id && n.ShoppingCartId == ShoppingCartId);
 
-			if (shoppingCartItem != null)
+			if (shoppingCartItem == null)
 			{
 				shoppingCartItem = new ShoppingCartItem()
 				{
@@ -65,8 +65,12 @@ namespace eTickets.Data.Cart
 				ShoppingCartId).Include(n => n.Movie).ToList());
 		}
 		//total money
-		public double GetShoppingCartTotal() => _context.ShoppingCartItems.Where(n => n.ShoppingCartId == ShoppingCartId).Select(n => n.Movie.Price * n.Amount).Sum();
-
+		public double GetShoppingCartTotal()
+		{
+			var item = _context.ShoppingCartItems.Where(n => n.ShoppingCartId == ShoppingCartId).ToList();
+			var totalPrice = item.Select(n => n.Movie.Price * (double)n.Amount).Sum();
+			return totalPrice;
+		}
 		public async Task ClearShoppingCartAsync()
 		{
 			var items = await _context.ShoppingCartItems.Where(n => n.ShoppingCartId == ShoppingCartId).ToListAsync();
