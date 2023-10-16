@@ -7,6 +7,9 @@ using Microsoft.Extensions.Configuration;
 using System.Diagnostics;
 using eTickets.Data.Services;
 using eTickets.Data.Cart;
+using eTickets.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -26,7 +29,14 @@ builder.Services.AddScoped<IOrdersService, OrdersService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped(sc => ShoppingCart.GetShoppingCart(sc));
 
+//Authentication and authorization
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders(); // adddefaulttokenproviders is different from the 5.0
+builder.Services.AddMemoryCache();
 builder.Services.AddSession();
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+});
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
@@ -46,6 +56,10 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseSession();
 
+// Authentication and Authorization
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.UseAuthorization();
 
 app.MapControllerRoute(
@@ -54,6 +68,7 @@ app.MapControllerRoute(
 
 // Seed Database 
 AppDbInitializer.Seed(app);
+AppDbInitializer.SeedUsersAndRolesAsync(app).Wait();
 
 app.Run();
 
