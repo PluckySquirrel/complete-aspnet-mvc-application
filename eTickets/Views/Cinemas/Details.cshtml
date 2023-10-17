@@ -29,11 +29,14 @@
 					<span asp-validation-for="Description" class="text-danger"></span>
 				</div>
 
+			@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+			{
 				<div class="form-group text-center">
 					<input type="submit" value="Create" class="btn btn-outline-success float-right" />
 					<a class="btn btn-outline-success float-right" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
 					<a class="btn btn-outline-secondary" asp-action="Index">Show All</a>
 				</div>
+			}
 		</div>
 	</div>
 </div>
