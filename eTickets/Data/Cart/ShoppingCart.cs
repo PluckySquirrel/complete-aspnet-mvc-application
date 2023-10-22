@@ -45,7 +45,7 @@ namespace eTickets.Data.Cart
 
 		public void RemoveItemFromCart(Movie movie)
 		{
-			var shoppingCartItem = _context.ShoppingCartItems.FirstOrDefault(n => n.Id == movie.Id && n.ShoppingCartId == ShoppingCartId);
+			var shoppingCartItem = _context.ShoppingCartItems.FirstOrDefault(n => n.Movie.Id == movie.Id && n.ShoppingCartId == ShoppingCartId);
 
 			if (shoppingCartItem != null)
 			{
