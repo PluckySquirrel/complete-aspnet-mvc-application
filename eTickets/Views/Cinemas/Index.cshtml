@@ -4,6 +4,21 @@
 	ViewData["Title"] = "List of Cinemas";
 }
 
+<style>
+	.circular--landscape{
+		display: inline-block;
+		position: relative;
+		width: 150px;
+		height: 150px;
+		overflow: hidden;
+		border-radius: 50%;
+	}
+	.circular--landscape img{
+		width: auto;
+		height: 100%;
+	}
+</style>
+
 <div class="row">
 	<div class="col-md-8 offset-md-2">
 
@@ -24,7 +39,9 @@
 				{
 					<tr>
 						<td class="align-middle">
-							<img class="rounded-circle" src="@item.Logo" alt="@item.Name" style="max-width: 150px" />
+							<div class="circular--landscape">
+								<img src="@item.Logo" alt="@item.Name"  />
+							</div>
 						</td>
 						<td class="align-middle">
 							@Html.DisplayFor(modelItem => item.Name)

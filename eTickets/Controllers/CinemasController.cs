@@ -32,7 +32,7 @@ namespace eTickets.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([Bind("Logo,Name,Description")]Cinema cinema)
+        public async Task<IActionResult> Create([Bind("Logo,Name,Description")] Cinema cinema)
         {
             if(!ModelState.IsValid) return View(cinema);
 

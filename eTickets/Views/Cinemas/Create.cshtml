@@ -4,6 +4,22 @@
 	ViewData["Title"] = "Add a new cinema";
 }
 
+<style>
+	.circular--landscape {
+		display: inline-block;
+		position: relative;
+		width: 150px;
+		height: 150px;
+		overflow: hidden;
+		border-radius: 50%;
+	}
+
+	.circular--landscape img {
+		width: auto;
+		height: 100%;
+	}
+</style>
+
 <div class="row text">
 	<div class="col-md-8 offset-2">
 		<p>
@@ -13,7 +29,7 @@
 			<form asp-action="Create">
 				<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-				<div class="form-group text-center">
+				<div class="form-group text-center circular--landscape">
 					<img id="CinemaLogoPreview" class="border-info rounded-circle" style="max-width: 150px"/>
 				</div>
 				<div class="form-group">
@@ -45,7 +61,7 @@
 	<script>
 		$(document).ready(function () {
 			var output = document.getElementById('CinemaLogoPreview');
-			output.src = $("Logo").val();
+			output.src = $("#Logo").val();
 		})
 
 		$("Logo").on("change", function () {
