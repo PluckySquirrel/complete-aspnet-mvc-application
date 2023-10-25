@@ -12,11 +12,13 @@ namespace eTickets.Controllers
 	public class CinemasController : Controller
     {
         private readonly ICinemasService _service;
+		private readonly ILogger<CinemasController> _logger;
 
-        public CinemasController(ICinemasService service)
+        public CinemasController(ICinemasService service, ILogger<CinemasController> logger)
         {
             _service = service;
-        }
+			_logger = logger;
+		}
 
         [AllowAnonymous]
         public async Task<IActionResult> Index()
@@ -34,11 +36,23 @@ namespace eTickets.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([Bind("Logo,Name,Description")] Cinema cinema)
         {
-            if(!ModelState.IsValid) return View(cinema);
+			if(!ModelState.IsValid) return View(cinema);
 
-            await _service.AddAsync(cinema);
-            return RedirectToAction(nameof(Index));
-        }
+			// await _service.AddAsync(cinema);
+			// return RedirectToAction(nameof(Index)); 
+			try
+			{
+				await _service.AddAsync(cinema);
+				return RedirectToAction(nameof(Index));
+			}
+			catch (Exception ex)
+			{
+				// Log the exception for debugging purposes.
+				_logger.LogError(ex, "Error adding cinema to the database");
+				ModelState.AddModelError(string.Empty, "An error occurred while adding the cinema.");
+				return View(cinema);
+			}
+		}
 
 		//Get: Cinemas/Details/1
 		[AllowAnonymous]

@@ -104,7 +104,7 @@ namespace eTickets.Controllers
             ViewBag.Producers = new SelectList(movieDropdownData.Producers, "Id", "FullName");
             ViewBag.Actors = new SelectList(movieDropdownData.Actors, "Id", "FullName");
 
-            return View();
+            return View(response);
         }
 
         [HttpPost]

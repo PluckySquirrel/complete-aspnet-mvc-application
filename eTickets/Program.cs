@@ -4,12 +4,18 @@ using Microsoft.Extensions.Options;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using eTickets.Data.Services;
 using eTickets.Data.Cart;
 using eTickets.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.Data.SqlClient;
+using System.Globalization;
+using System.Data.SqlClient;
+
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -25,6 +31,12 @@ builder.Services.AddScoped<IProducerService, ProducerService>();
 builder.Services.AddScoped<ICinemasService, CinemasService>();
 builder.Services.AddScoped<IMovieService, MovieService>();
 builder.Services.AddScoped<IOrdersService, OrdersService>();
+
+builder.Services.AddLogging(builder =>
+{
+    builder.AddConsole(); // Add console logger (for development)
+    // Add other logging providers as needed
+});
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped(sc => ShoppingCart.GetShoppingCart(sc));
@@ -57,6 +69,17 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+// Use en-US culture that accepts "." as decimal point
+var supportedCultures = new[] { "en-US" };
+var cultures = supportedCultures.Select(culture => new CultureInfo(culture)).ToList();
+
+app.UseRequestLocalization(new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture("en-US"),
+    SupportedCultures = cultures,
+    SupportedUICultures = cultures
+});
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

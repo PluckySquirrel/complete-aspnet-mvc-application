@@ -18,6 +18,7 @@ namespace eTickets.Models
 		public string Description { get; set; }
 
 		[Display(Name = "Price in $")]
+		[DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
 		[Required(ErrorMessage = "Price is required")]
 		public double Price {  get; set; }
 

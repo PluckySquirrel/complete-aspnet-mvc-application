@@ -4,6 +4,21 @@
 	ViewData["Title"] = "List of Actors";
 }
 
+<style>
+	.circular--portrait{
+		position: relative;
+		width: 150px;
+		height: 150px;
+		overflow: hidden;
+		border-radius: 50%;
+	}
+	
+	.circular--portrait img {
+		width: 100%;
+		height: auto;
+	}
+</style>
+
 <div class="row">
 	<div class="col-md-8 offset-md-2">
 
@@ -24,7 +39,9 @@
 				{
 					<tr>
 						<td class="align-middle">
-							<img class="rounded-circle" src="@item.ProfilePictureURL" alt="@item.FullName" style="max-width: 150px" />
+							<div class="circular--portrait">
+								<img class="rounded-circle" src="@item.ProfilePictureURL" alt="@item.FullName" style="max-width: 150px" />
+							</div>
 						</td>
 						<td class="align-middle">
 							@Html.DisplayFor(modelItem => item.FullName)
